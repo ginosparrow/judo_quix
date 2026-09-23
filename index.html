@@ -284,7 +284,7 @@ const tech = () => Object.entries(TECNICHE).flatMap(([g, ns]) => ns.map(n => {
 }));
 
 /* Impostazioni del video nel quiz (valori in % della larghezza/altezza del video) */
-const QV = {start:30, autoplay:false, coverTop:15, coverW:32, coverH:16};
+const QV = {start:5, autoplay:false, coverTop:15, coverW:32, coverH:16};
 function media(x, quiz = false) {
   if (x.type !== 'video') return `<span>${esc(x.value)}</span>`;
   const id = ytId(x.value);
