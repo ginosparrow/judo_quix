@@ -4,7 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Judo Flash Card</title>
-<link rel="stylesheet" href="style.css">
+<style>
+:root{--bg:#f3f1ec;--ink:#1d2433;--navy:#1f3a5f;--red:#b3261e;--ok:#2e7d4f;--card:#fff;--line:#d8d4ca}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Georgia,'Times New Roman',serif}
+header{background:var(--navy);color:#fff;padding:18px 20px}
+header h1{margin:0;font-size:1.5rem;font-weight:600}
+nav{display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap}
+button,select{font:inherit;padding:8px 14px;border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:4px;cursor:pointer}
+button.on,button:hover{background:var(--navy);color:#fff}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+main{max-width:860px;margin:0 auto;padding:0 20px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:22px;margin-bottom:16px}
+.q{font-size:1.4rem;margin:0 0 16px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{border:2px solid var(--line);border-radius:6px;padding:12px;background:#fff;cursor:pointer;text-align:left;color:var(--ink)}
+.opt:hover{border-color:var(--navy);background:#fff;color:var(--ink)}
+.opt.right{border-color:var(--ok);background:#e8f4ec}
+.opt.wrong{border-color:var(--red);background:#fbeceb}
+.opt[disabled]{cursor:default}
+iframe,video{width:100%;aspect-ratio:16/9;border:0;background:#000;border-radius:4px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;color:#555}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.tag{color:var(--red);font-size:.9rem}
+.empty{padding:16px;border:1px dashed var(--line);color:#555;border-radius:4px;margin-bottom:12px;background:#fff}
+.veil{filter:blur(7px);cursor:pointer}.ans{font-size:1.15rem;color:var(--ok);margin:0}
+input[type=url],textarea{width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:4px;margin:6px 0}
+.chk{font-size:.95rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+h3{margin:0 0 4px}
+@media(max-width:600px){.opts{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header><h1>Judo Flash Card</h1></header>
@@ -15,38 +44,214 @@
   <button id="tabGestione">Gestione video</button>
 </nav>
 <main>
-  <section id="quiz">
-    <div class="bar">
-      <label>Sezione <select id="sezione"></select></label>
-      <button id="start">Nuovo quiz</button>
-    </div>
-    <div id="avviso"></div>
-    <div id="stage"></div>
-  </section>
+<section id="quiz">
+  <div class="bar">
+    <label>Sezione <select id="sezione"></select></label>
+    <button id="start">Nuovo quiz</button>
+  </div>
+  <div id="avviso"></div>
+  <div id="stage"></div>
+</section>
 
-  <section id="video" hidden><div id="catalogo" class="grid"></div></section>
+<section id="video" hidden><div id="catalogo" class="grid"></div></section>
 
-  <section id="studio" hidden>
-    <div class="bar">
-      <label>Sezione <select id="sezStudio"></select></label>
-      <label><input type="checkbox" id="hide"> Nascondi risposte (tocca per svelare)</label>
-    </div>
-    <div id="listaStudio"></div>
-  </section>
+<section id="studio" hidden>
+  <div class="bar">
+    <label>Sezione <select id="sezStudio"></select></label>
+    <label><input type="checkbox" id="hide"> Nascondi risposte (tocca per svelare)</label>
+  </div>
+  <div id="listaStudio"></div>
+</section>
 
-  <section id="gestione" hidden>
-    <p>Incolla il link del video di ogni tecnica (YouTube o file .mp4) e premi Salva. Le modifiche restano nel tuo browser:
-       per renderle definitive usa <strong>Esporta videos.json</strong> e sostituisci il file nel repository.</p>
-    <p class="row">
-      <button id="verifica">Verifica tutti i link</button>
-      <button id="esporta">Esporta videos.json</button>
-      <label class="btn">Importa videos.json<input type="file" id="importa" accept=".json" hidden></label>
-      <button id="azzera">Azzera modifiche locali</button>
-    </p>
-    <div id="esito"></div>
-    <div id="listaGestione"></div>
-  </section>
+<section id="gestione" hidden>
+  <p>Le modifiche restano salvate in questo browser. Per renderle permanenti scarica <code>videos.json</code> e sostituiscilo nel repository.</p>
+  <div class="bar">
+    <span><button id="scarica">Scarica videos.json</button> <button id="azzera">Azzera modifiche locali</button></span>
+  </div>
+  <div id="listaGestione"></div>
+</section>
 </main>
-<script src="app.js"></script>
+
+<script>
+/* ---------- CONTENUTI ---------- */
+const TECNICHE = {
+  "Te Waza": ["Ippon Seoi Nage","Morote Seoi Nage","Eri Seoi Nage","Tai Otoshi"],
+  "Koshi Waza": ["Uki Goshi","O Goshi","Harai Goshi","Koshi Guruma","Tsurikomi Goshi"],
+  "Ashi Waza": ["De Ashi Barai","Okuri Ashi Barai","O Soto Gari","O Uchi Gari","Sasae Tsurikomi Ashi","Hiza Guruma","Uchi Mata","Ko Soto Gari","Ko Uchi Gari"],
+  "Osae Waza": ["Kesa Gatame","Yoko Shiho Gatame","Kami Shiho Gatame","Tate Shiho Gatame"],
+  "Shime Waza": ["Kata Juji Jime","Nami Juji Jime","Gyaku Juji Jime","Hadaka Jime","Okuri Eri Jime"],
+  "Kansetsu Waza": ["Ude Garami","Ude Ishigi","Juji Gatame","Ude Gatame","Waki Gatame"]
+};
+const EXTRA = ["Sutemi Waza"]; // solo come risposta errata plausibile
+const SEZIONI = {
+  "Storia e Filosofia": [
+    ["Chi ha fondato il judo?","Jigoro Kano",["Morihei Ueshiba","Gichin Funakoshi","Mitsuyo Maeda"]],
+    ["Come si chiama la scuola fondata da Kano nel 1882?","Kodokan",["Butokuden","Kokushikan","Shotokan"]],
+    ["Cosa significa 'Judo'?","Via della cedevolezza",["Via della spada","Via del pugno","Via dell'equilibrio"]],
+    ["Qual è il principio 'Seiryoku Zen'yo'?","Massima efficienza con il minimo sforzo",["Mutuo benessere e prosperità","Vittoria a ogni costo","Rispetto del maestro"]],
+    ["Qual è il principio 'Jita Kyoei'?","Mutuo benessere e prosperità",["Massima efficienza con il minimo sforzo","Forza e coraggio","Attacco e difesa"]]
+  ],
+  "Organizzazione Federale": [
+    ["Cosa significa FIJLKAM?","Federazione Italiana Judo Lotta Karate Arti Marziali",["Federazione Italiana Judo Libero Kendo Aikido Marziali","Federazione Internazionale Judo Lotta Karate Arti Marziali","Federazione Italiana Judo Lotta Kickboxing Arti Marziali"]],
+    ["Chi è il Presidente federale FIJLKAM (organigramma sul sito ufficiale)?","Giovanni Morsiani",["Domenico Falcone","Giuseppe Matera","Massimiliano Benucci"]],
+    ["Chi è il Segretario Generale FIJLKAM?","Massimiliano Benucci",["Giovanni Morsiani","Giuseppe Matera","Giuseppe Pellicone"]],
+    ["Chi è il Vicepresidente Vicario e Presidente del Settore Judo?","Giuseppe Matera",["Giovanni Morsiani","Massimiliano Benucci","Matteo Pellicone"]],
+    ["Chi sono i Presidenti Onorari FIJLKAM?","Matteo e Giuseppe Pellicone",["Giovanni Morsiani e Giuseppe Matera","Ezio Gamba e Pino Maddaloni","Massimiliano Benucci e Luigi Busà"]]
+  ],
+  "Arbitraggio": [
+    ["Cosa significa 'Hajime'?","Inizio",["Fermi","Fine incontro","Punto"]],
+    ["Cosa significa 'Matte'?","Fermi / attendere",["Inizio","Fine incontro","Immobilizzazione"]],
+    ["Cosa significa 'Sore-made'?","Fine dell'incontro",["Inizio","Fermi","Squalifica"]],
+    ["Come si chiama l'immobilizzazione annunciata dall'arbitro?","Osaekomi",["Toketa","Shido","Ippon"]],
+    ["Cosa annuncia l'arbitro quando l'immobilizzazione viene interrotta?","Toketa",["Osaekomi","Matte","Hajime"]],
+    ["Come si chiama la squalifica diretta?","Hansoku-make",["Shido","Waza-ari","Ippon"]],
+    ["Come si chiama la penalità lieve?","Shido",["Hansoku-make","Ippon","Osaekomi"]]
+  ],
+  "Posizioni, prese e spostamenti": [
+    ["Come si chiama lo squilibrio dell'avversario prima della tecnica?","Kuzushi",["Tsukuri","Kake","Rei"]],
+    ["Come si chiama la posizione naturale eretta?","Shizentai",["Jigotai","Kamae","Seiza"]],
+    ["Come si chiama la posizione difensiva (gambe piegate, baricentro basso)?","Jigotai",["Shizentai","Seiza","Ukemi"]],
+    ["Come si chiama chi esegue la tecnica?","Tori",["Uke","Sensei","Shushin"]],
+    ["Come si chiama chi subisce la tecnica?","Uke",["Tori","Sensei","Shushin"]],
+    ["Come si chiamano le prese?","Kumi Kata",["Ukemi","Kuzushi","Randori"]],
+    ["Come si chiama il passo in cui i piedi non si incrociano?","Tsugi Ashi",["Ayumi Ashi","Sasae","Harai"]]
+  ],
+  "Medaglie olimpiche": [
+    ["In quale Olimpiade debuttò il judo?","Tokyo 1964",["Roma 1960","Monaco 1972","Barcellona 1992"]],
+    ["Chi vinse l'oro nella categoria open a Tokyo 1964, primo non giapponese?","Anton Geesink",["Teddy Riner","Yasuhiro Yamashita","Ezio Gamba"]],
+    ["Quanti ori olimpici ha vinto Tadahiro Nomura?","3",["1","2","4"]],
+    ["Chi vinse l'oro olimpico a Mosca 1980 per l'Italia?","Ezio Gamba",["Pino Maddaloni","Fabio Basile","Giulia Quintavalle"]],
+    ["Chi vinse l'oro olimpico a Sydney 2000 per l'Italia?","Pino Maddaloni",["Ezio Gamba","Fabio Basile","Giulia Quintavalle"]],
+    ["Chi vinse l'oro olimpico a Pechino 2008 per l'Italia?","Giulia Quintavalle",["Odette Giuffrida","Maria Centracchio","Elisabetta Sacchi"]],
+    ["Chi vinse l'oro olimpico a Rio 2016 per l'Italia?","Fabio Basile",["Pino Maddaloni","Ezio Gamba","Elios Manzi"]]
+  ]
+};
+
+/* ---------- UTILITÀ ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const ytId = u => (String(u||'').match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)||[])[1];
+const isFile = u => /\.(mp4|webm)(\?|$)/i.test(u||'');
+const T = s => ({type:'text', value:s});
+
+/* ---------- DATI VIDEO: videos.json + modifiche locali ---------- */
+let FILE = {}, LOCAL = {}, META = {}, FILE_ERR = false;
+async function load() {
+  try { FILE = await (await fetch('videos.json', {cache:'no-store'})).json(); FILE_ERR = false; }
+  catch (e) { FILE = {}; FILE_ERR = true; }
+  try { LOCAL = JSON.parse(localStorage.getItem('judo_videos') || '{}'); } catch (e) { LOCAL = {}; }
+  META = {...FILE, ...LOCAL};
+}
+const tech = () => Object.entries(TECNICHE).flatMap(([g, ns]) => ns.map(n => {
+  const m = META[n] || {}, raw = m.video || '';
+  return {nome:n, gruppo:g, raw, video:(ytId(raw)||isFile(raw)) ? raw : '', desc:m.desc||''};
+}));
+
+function media(x) {
+  if (x.type !== 'video') return `<span>${esc(x.value)}</span>`;
+  const id = ytId(x.value);
+  return id ? `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen loading="lazy"></iframe>`
+            : `<video src="${esc(x.value)}" controls preload="metadata"></video>`;
+}
+
+/* ---------- QUIZ ---------- */
+const build = (q, c, w) => ({question:q, options:shuffle([c,...w].map((x,i)=>({id:i,...x}))), answer:0});
+function techCards() {
+  const all = tech(), withVideo = all.filter(t => t.video);
+  if (withVideo.length)  // video in alto, quattro nomi sotto
+    return withVideo.map(t => build({type:'video', value:t.video}, T(t.nome),
+      shuffle(all.filter(x => x.nome !== t.nome && x.video !== t.video)).slice(0,3).map(x => T(x.nome))));
+  const G = [...Object.keys(TECNICHE), ...EXTRA];
+  return all.map(t => build(T(`A quale gruppo appartiene ${t.nome}?`), T(t.gruppo),
+    shuffle(G.filter(g => g !== t.gruppo)).slice(0,3).map(T)));
+}
+let cards = [], i = 0, score = 0;
+function start() {
+  const s = $('#sezione').value; let c = [];
+  if (s === 'Tutte' || s === 'Tecniche') c = c.concat(techCards());
+  for (const k in SEZIONI) if (s === 'Tutte' || s === k)
+    c = c.concat(SEZIONI[k].map(([q,a,w]) => build(T(q), T(a), w.map(T))));
+  cards = shuffle(c).slice(0, 10); i = 0; score = 0;
+  $('#avviso').innerHTML = FILE_ERR
+    ? '<div class="empty">Non riesco a leggere <b>videos.json</b>. Apri la pagina da GitHub Pages o da un server locale (<code>python -m http.server</code>): aprendo il file con doppio clic il browser lo blocca.</div>'
+    : tech().some(t => t.video) ? '' : '<div class="empty">Nessun video valido in videos.json: le tecniche vengono chieste per gruppo. Aggiungi i link in "Gestione video".</div>';
+  show();
+}
+function show() {
+  const st = $('#stage');
+  if (i >= cards.length) { st.innerHTML = `<div class="card"><p class="q">Risultato: ${score} su ${cards.length}</p><button id="again">Ricomincia</button></div>`; $('#again').onclick = start; return; }
+  const c = cards[i];
+  st.innerHTML = `<div class="bar"><span>Domanda ${i+1} di ${cards.length}</span><span>Punti: ${score}</span></div>
+    <div class="card"><div class="q">${media(c.question)}</div>
+    <div class="opts">${c.options.map(o => `<button class="opt" data-id="${o.id}">${media(o)}</button>`).join('')}</div></div>
+    <button id="next" hidden>Avanti</button>`;
+  st.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    const ok = +b.dataset.id === c.answer; if (ok) score++;
+    st.querySelectorAll('.opt').forEach(x => { x.disabled = true; if (+x.dataset.id === c.answer) x.classList.add('right'); });
+    if (!ok) b.classList.add('wrong');
+    $('#next').hidden = false; $('#next').onclick = () => { i++; show(); };
+  });
+}
+
+/* ---------- CATALOGO E STUDIO ---------- */
+function catalogo() {
+  $('#catalogo').innerHTML = tech().map(x => `<div class="card"><h3>${esc(x.nome)}</h3><div class="tag">${esc(x.gruppo)}</div>
+    ${x.video ? media({type:'video', value:x.video}) : '<div class="empty">Video non ancora inserito</div>'}
+    <p>${esc(x.desc)}</p></div>`).join('');
+}
+function studio() {
+  const hide = $('#hide').checked;
+  $('#listaStudio').innerHTML = SEZIONI[$('#sezStudio').value].map(([q,a]) => `<div class="card"><p class="q">${esc(q)}</p>
+    <p class="ans ${hide?'veil':''}" onclick="this.classList.remove('veil')"><strong>${esc(a)}</strong></p></div>`).join('');
+}
+
+/* ---------- GESTIONE: modifica, verifica anteprima, download ---------- */
+function check(c) {
+  const nome = c.dataset.nome, u = c.querySelector('input').value.trim(), out = c.querySelector('.chk'), id = ytId(u);
+  if (!u) { out.innerHTML = '<span class="tag">Nessun link inserito</span>'; return; }
+  if (!id) { out.innerHTML = isFile(u) ? 'File video diretto' : '<span class="tag">Link non valido: serve un link a un video (watch?v=…, youtu.be/…)</span>'; return; }
+  const dup = tech().filter(t => t.nome !== nome && ytId(t.video) === id).map(t => t.nome);
+  const im = new Image();
+  im.onload = () => out.innerHTML = `<img src="${im.src}" alt="" width="160"><span>Il video esiste: controlla che mostri ${esc(nome)}.${dup.length ? `<br><span class="tag">Stesso video di: ${esc(dup.join(', '))}</span>` : ''}</span>`;
+  im.onerror = () => out.innerHTML = '<span class="tag">Video inesistente o privato</span>';
+  out.textContent = 'Controllo…'; im.src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+}
+function gestione() {
+  $('#listaGestione').innerHTML = tech().map(t => `<div class="card" data-nome="${esc(t.nome)}">
+    <h3>${esc(t.nome)} <span class="tag">${esc(t.gruppo)}</span></h3>
+    <input type="url" placeholder="https://www.youtube.com/watch?v=..." value="${esc(t.raw)}">
+    <textarea rows="2" placeholder="Descrizione (facoltativa)">${esc(t.desc)}</textarea><div class="chk"></div></div>`).join('');
+  document.querySelectorAll('#listaGestione .card').forEach(c => {
+    const inp = c.querySelector('input'), ta = c.querySelector('textarea');
+    const save = () => {
+      LOCAL[c.dataset.nome] = {video:inp.value.trim(), desc:ta.value.trim()};
+      try { localStorage.setItem('judo_videos', JSON.stringify(LOCAL)); } catch (e) {}
+      META = {...FILE, ...LOCAL}; check(c);
+    };
+    inp.onchange = save; ta.onchange = save; check(c);
+  });
+}
+$('#scarica').onclick = () => {
+  const out = {};
+  for (const t of tech()) out[t.nome] = {video:t.raw, desc:t.desc};
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], {type:'application/json'}));
+  a.download = 'videos.json'; a.click();
+};
+$('#azzera').onclick = async () => { try { localStorage.removeItem('judo_videos'); } catch (e) {} await load(); gestione(); };
+
+/* ---------- SCHEDE E AVVIO ---------- */
+const tabs = {Quiz:'quiz', Video:'video', Studio:'studio', Gestione:'gestione'};
+function go(k) {
+  for (const [t, s] of Object.entries(tabs)) { $('#'+s).hidden = t !== k; $('#tab'+t).classList.toggle('on', t === k); }
+  if (k === 'Video') catalogo(); if (k === 'Studio') studio(); if (k === 'Gestione') gestione(); if (k === 'Quiz') start();
+}
+for (const t of Object.keys(tabs)) $('#tab'+t).onclick = () => go(t);
+$('#start').onclick = start; $('#sezStudio').onchange = studio; $('#hide').onchange = studio;
+$('#sezione').innerHTML = ['Tutte','Tecniche',...Object.keys(SEZIONI)].map(s => `<option>${esc(s)}</option>`).join('');
+$('#sezStudio').innerHTML = Object.keys(SEZIONI).map(s => `<option>${esc(s)}</option>`).join('');
+load().then(start);
+</script>
 </body>
 </html>
