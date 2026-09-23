@@ -1,5 +1,5 @@
 const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc = s => String(s).replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const pick = (a, n) => shuffle(a).slice(0, n);
 const LS = 'judo_videos_v1';
@@ -11,7 +11,7 @@ const ytId = u => { const m = (u || '').match(/(?:youtu\.be\/|v=|embed\/|shorts\
 function media(x) {
   if (x.type !== 'video') return `<span>${esc(x.value)}</span>`;
   const id = ytId(x.value);
-  return id ? `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen loading="lazy"></iframe>`
+  return id ? `<iframe src="https://www.youtube.com/embed/${id}?start=6" allowfullscreen loading="lazy"></iframe>`
             : `<video src="${esc(x.value)}" controls preload="metadata"></video>`;
 }
 async function getJSON(u) { try { const r = await fetch(u); if (!r.ok) throw 0; return await r.json(); } catch { return null; } }
@@ -138,7 +138,7 @@ function go(k) {
 
 (async function init() {
   DATA = await getJSON('data.json');
-  if (!DATA) { $('main').innerHTML = '<div class="empty">Impossibile caricare data.json. Apri il sito da GitHub Pages oppure avvia un server locale (python -m http.server); aprendo index.html con doppio clic il browser blocca il caricamento dei file JSON.</div>'; return; }
+  if (!DATA) { $('main').innerHTML = '<div class="empty">Impossibile caricare data.json. Apri il sito da GitHub Pages oppure avvia un server locale (python -m http.server); aprendo index.html con doppio click non funziona.</div>'; return; }
   BASE = (await getJSON('videos.json')) || {};
   buildMeta();
   const sez = Object.keys(DATA.sezioni);
