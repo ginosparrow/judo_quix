@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Judo Flash Card</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1>Judo Flash Card</h1></header>
+<nav>
+  <button id="tabQuiz" class="on">Quiz</button>
+  <button id="tabVideo">Video e tecniche</button>
+  <button id="tabStudio">Studio risposte</button>
+  <button id="tabGestione">Gestione video</button>
+</nav>
+<main>
+  <section id="quiz">
+    <div class="bar">
+      <label>Sezione <select id="sezione"></select></label>
+      <button id="start">Nuovo quiz</button>
+    </div>
+    <div id="avviso"></div>
+    <div id="stage"></div>
+  </section>
+
+  <section id="video" hidden><div id="catalogo" class="grid"></div></section>
+
+  <section id="studio" hidden>
+    <div class="bar">
+      <label>Sezione <select id="sezStudio"></select></label>
+      <label><input type="checkbox" id="hide"> Nascondi risposte (tocca per svelare)</label>
+    </div>
+    <div id="listaStudio"></div>
+  </section>
+
+  <section id="gestione" hidden>
+    <p>Incolla il link del video di ogni tecnica (YouTube o file .mp4) e premi Salva. Le modifiche restano nel tuo browser:
+       per renderle definitive usa <strong>Esporta videos.json</strong> e sostituisci il file nel repository.</p>
+    <p class="row">
+      <button id="verifica">Verifica tutti i link</button>
+      <button id="esporta">Esporta videos.json</button>
+      <label class="btn">Importa videos.json<input type="file" id="importa" accept=".json" hidden></label>
+      <button id="azzera">Azzera modifiche locali</button>
+    </p>
+    <div id="esito"></div>
+    <div id="listaGestione"></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

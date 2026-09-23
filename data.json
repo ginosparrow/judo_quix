@@ -1,0 +1,342 @@
+{
+ "tecniche": {
+  "Te Waza": [
+   "Ippon Seoi Nage",
+   "Morote Seoi Nage",
+   "Eri Seoi Nage",
+   "Tai Otoshi"
+  ],
+  "Koshi Waza": [
+   "Uki Goshi",
+   "O Goshi",
+   "Harai Goshi",
+   "Koshi Guruma",
+   "Tsurikomi Goshi"
+  ],
+  "Ashi Waza": [
+   "De Ashi Barai",
+   "Okuri Ashi Barai",
+   "O Soto Gari",
+   "O Uchi Gari",
+   "Sasae Tsurikomi Ashi",
+   "Hiza Guruma",
+   "Uchi Mata",
+   "Ko Soto Gari",
+   "Ko Uchi Gari"
+  ],
+  "Osae Waza": [
+   "Kesa Gatame",
+   "Yoko Shiho Gatame",
+   "Kami Shiho Gatame",
+   "Tate Shiho Gatame"
+  ],
+  "Shime Waza": [
+   "Kata Juji Jime",
+   "Nami Juji Jime",
+   "Gyaku Juji Jime",
+   "Hadaka Jime",
+   "Okuri Eri Jime"
+  ],
+  "Kansetsu Waza": [
+   "Ude Garami",
+   "Ude Ishigi",
+   "Juji Gatame",
+   "Ude Gatame",
+   "Waki Gatame"
+  ]
+ },
+ "gruppi_extra": [
+  "Sutemi Waza"
+ ],
+ "sezioni": {
+  "Storia e Filosofia": [
+   [
+    "Chi ha fondato il judo?",
+    "Jigoro Kano",
+    [
+     "Morihei Ueshiba",
+     "Gichin Funakoshi",
+     "Mitsuyo Maeda"
+    ]
+   ],
+   [
+    "Come si chiama la scuola fondata da Kano nel 1882?",
+    "Kodokan",
+    [
+     "Butokuden",
+     "Kokushikan",
+     "Shotokan"
+    ]
+   ],
+   [
+    "Cosa significa 'Judo'?",
+    "Via della cedevolezza",
+    [
+     "Via della spada",
+     "Via del pugno",
+     "Via dell'equilibrio"
+    ]
+   ],
+   [
+    "Qual è il principio 'Seiryoku Zen'yo'?",
+    "Massima efficienza con il minimo sforzo",
+    [
+     "Mutuo benessere e prosperità",
+     "Vittoria a ogni costo",
+     "Rispetto del maestro"
+    ]
+   ],
+   [
+    "Qual è il principio 'Jita Kyoei'?",
+    "Mutuo benessere e prosperità",
+    [
+     "Massima efficienza con il minimo sforzo",
+     "Forza e coraggio",
+     "Attacco e difesa"
+    ]
+   ]
+  ],
+  "Organizzazione Federale": [
+   [
+    "Cosa significa FIJLKAM?",
+    "Federazione Italiana Judo Lotta Karate Arti Marziali",
+    [
+     "Federazione Italiana Judo Libero Kendo Aikido Marziali",
+     "Federazione Internazionale Judo Lotta Karate Arti Marziali",
+     "Federazione Italiana Judo Lotta Kickboxing Arti Marziali"
+    ]
+   ],
+   [
+    "Chi è il Presidente federale FIJLKAM (organigramma sul sito ufficiale)?",
+    "Giovanni Morsiani",
+    [
+     "Domenico Falcone",
+     "Giuseppe Matera",
+     "Massimiliano Benucci"
+    ]
+   ],
+   [
+    "Chi è il Segretario Generale FIJLKAM?",
+    "Massimiliano Benucci",
+    [
+     "Giovanni Morsiani",
+     "Giuseppe Matera",
+     "Giuseppe Pellicone"
+    ]
+   ],
+   [
+    "Chi è il Vicepresidente Vicario e Presidente del Settore Judo?",
+    "Giuseppe Matera",
+    [
+     "Giovanni Morsiani",
+     "Massimiliano Benucci",
+     "Matteo Pellicone"
+    ]
+   ],
+   [
+    "Chi sono i Presidenti Onorari FIJLKAM?",
+    "Matteo e Giuseppe Pellicone",
+    [
+     "Giovanni Morsiani e Giuseppe Matera",
+     "Ezio Gamba e Pino Maddaloni",
+     "Massimiliano Benucci e Luigi Busà"
+    ]
+   ]
+  ],
+  "Arbitraggio": [
+   [
+    "Cosa significa 'Hajime'?",
+    "Inizio",
+    [
+     "Fermi",
+     "Fine incontro",
+     "Punto"
+    ]
+   ],
+   [
+    "Cosa significa 'Matte'?",
+    "Fermi / attendere",
+    [
+     "Inizio",
+     "Fine incontro",
+     "Immobilizzazione"
+    ]
+   ],
+   [
+    "Cosa significa 'Sore-made'?",
+    "Fine dell'incontro",
+    [
+     "Inizio",
+     "Fermi",
+     "Squalifica"
+    ]
+   ],
+   [
+    "Come si chiama l'immobilizzazione annunciata dall'arbitro?",
+    "Osaekomi",
+    [
+     "Toketa",
+     "Shido",
+     "Ippon"
+    ]
+   ],
+   [
+    "Cosa annuncia l'arbitro quando l'immobilizzazione viene interrotta?",
+    "Toketa",
+    [
+     "Osaekomi",
+     "Matte",
+     "Hajime"
+    ]
+   ],
+   [
+    "Come si chiama la squalifica diretta?",
+    "Hansoku-make",
+    [
+     "Shido",
+     "Waza-ari",
+     "Ippon"
+    ]
+   ],
+   [
+    "Come si chiama la penalità lieve?",
+    "Shido",
+    [
+     "Hansoku-make",
+     "Ippon",
+     "Osaekomi"
+    ]
+   ]
+  ],
+  "Posizioni, prese e spostamenti": [
+   [
+    "Come si chiama il squilibrio dell'avversario prima della tecnica?",
+    "Kuzushi",
+    [
+     "Tsukuri",
+     "Kake",
+     "Rei"
+    ]
+   ],
+   [
+    "Come si chiama la posizione naturale eretta?",
+    "Shizentai",
+    [
+     "Jigotai",
+     "Kamae",
+     "Seiza"
+    ]
+   ],
+   [
+    "Come si chiama la posizione difensiva (gambe piegate, baricentro basso)?",
+    "Jigotai",
+    [
+     "Shizentai",
+     "Seiza",
+     "Ukemi"
+    ]
+   ],
+   [
+    "Come si chiama chi esegue la tecnica?",
+    "Tori",
+    [
+     "Uke",
+     "Sensei",
+     "Shushin"
+    ]
+   ],
+   [
+    "Come si chiama chi subisce la tecnica?",
+    "Uke",
+    [
+     "Tori",
+     "Sensei",
+     "Shushin"
+    ]
+   ],
+   [
+    "Come si chiamano le prese?",
+    "Kumi Kata",
+    [
+     "Ukemi",
+     "Kuzushi",
+     "Randori"
+    ]
+   ],
+   [
+    "Come si chiama il passo in cui i piedi non si incrociano?",
+    "Tsugi Ashi",
+    [
+     "Ayumi Ashi",
+     "Sasae",
+     "Harai"
+    ]
+   ]
+  ],
+  "Medaglie olimpiche": [
+   [
+    "In quale Olimpiade debuttò il judo?",
+    "Tokyo 1964",
+    [
+     "Roma 1960",
+     "Monaco 1972",
+     "Barcellona 1992"
+    ]
+   ],
+   [
+    "Chi vinse l'oro nella categoria open a Tokyo 1964, primo non giapponese?",
+    "Anton Geesink",
+    [
+     "Teddy Riner",
+     "Yasuhiro Yamashita",
+     "Ezio Gamba"
+    ]
+   ],
+   [
+    "Quanti ori olimpici ha vinto Tadahiro Nomura?",
+    "3",
+    [
+     "1",
+     "2",
+     "4"
+    ]
+   ],
+   [
+    "Chi vinse l'oro olimpico a Mosca 1980 per l'Italia?",
+    "Ezio Gamba",
+    [
+     "Pino Maddaloni",
+     "Fabio Basile",
+     "Giulia Quintavalle"
+    ]
+   ],
+   [
+    "Chi vinse l'oro olimpico a Sydney 2000 per l'Italia?",
+    "Pino Maddaloni",
+    [
+     "Ezio Gamba",
+     "Fabio Basile",
+     "Giulia Quintavalle"
+    ]
+   ],
+   [
+    "Chi vinse l'oro olimpico a Pechino 2008 per l'Italia?",
+    "Giulia Quintavalle",
+    [
+     "Odette Giuffrida",
+     "Maria Centracchio",
+     "Elisabetta Sacchi"
+    ]
+   ],
+   [
+    "Chi vinse l'oro olimpico a Rio 2016 per l'Italia?",
+    "Fabio Basile",
+    [
+     "Pino Maddaloni",
+     "Ezio Gamba",
+     "Elios Manzi"
+    ]
+   ]
+  ]
+ }
+}
